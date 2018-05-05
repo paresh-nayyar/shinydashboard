@@ -20,7 +20,10 @@ ui <- fluidPage(
                    selected = 'head')
       ),
     mainPanel(
-      tableOutput('contents')
+      tabsetPanel(type = 'tabs',
+                  tabPanel("Summary",verbatimTextOutput("summary")),
+                  tabPanel("Table",tableOutput('contents')))
+      
     )
   )
   
