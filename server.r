@@ -1,26 +1,38 @@
-get <- NULL
-df <- NULL
 server <- function(input, output)
 {
   data <- reactive({
-    df <<- read.csv(input$filedata$datapath,
+    df <- read.csv(input$filedata$datapath,
                    header = input$header,
                    sep    = input$sep)
-    return (df)
     
   })
   output$contents <- renderTable({
-    data()
+    
     req(input$filedata)
     get <- input$filedata
-     
+    
+    if(is.null(input$filedata)){
+      return(NULL)
+    }else{
     
     if(input$disp == 'head'){
-      return(head(df))
+      return(head(data()))
     }
     else {
-      return(df)
+      return(data())
     }
+    }    
   })
+  output$summary <- renderPrint({
+
+    if(is.null(input$filedata))
+      return("Waitingforfile")
+    summary(data())
+    
+    
+    
+  }
+    
+  )
 }
 
