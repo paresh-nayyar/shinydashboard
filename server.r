@@ -1,5 +1,5 @@
 get <- NULL
-server <- function(input, output,session)
+server <- function(input, output)
 {
     data <- eventReactive(input$submit,{
       df <- read.csv(input$filedata$datapath,sep = input$sep, header = input$header)
@@ -30,5 +30,11 @@ server <- function(input, output,session)
     }
     
   )
+  
+ output$columns <- renderUI({
+   df        <- data()
+   col.names <- names(df)
+   selectInput("columns","Select Columns",col.names,multiple = T)
+ })
 }
 

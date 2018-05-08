@@ -1,7 +1,9 @@
 library(shiny)
-ui <- fluidPage(
-  titlePanel("Hello Shiny!"),
-  
+library(shinythemes)
+
+shinyUI(fluidPage(navbarPage(theme=shinytheme("flatly"),tags$b("DashBoard"),br(),collapsible = T,
+                             
+tabPanel("Data",
   sidebarLayout(
     sidebarPanel(
       fileInput("filedata","Choose CSV File",accept = c("text/csv",
@@ -17,7 +19,8 @@ ui <- fluidPage(
                    choices = c(Head = 'head',
                                ALL  = 'all'),
                    selected = 'head'),
-      actionButton("submit", "Submit")
+      actionButton("submit", "Submit"),
+      uiOutput("columns")
       ),
     mainPanel(
       tabsetPanel(type = 'tabs',
@@ -25,6 +28,12 @@ ui <- fluidPage(
                   tabPanel("Table",tableOutput('contents')))
       
     )
-  )
-  
+  )),
+navbarMenu("More",
+           tabPanel("Summary"),
+           "----",
+           "Section header",
+           tabPanel("Table")
 )
+  
+)))
