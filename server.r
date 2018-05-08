@@ -1,15 +1,12 @@
-server <- function(input, output)
+get <- NULL
+server <- function(input, output,session)
 {
-  data <- reactive({
-    df <- read.csv(input$filedata$datapath,
-                   header = input$header,
-                   sep    = input$sep)
-    
-  })
+    data <- eventReactive(input$submit,{
+      df <- read.csv(input$filedata$datapath,sep = input$sep, header = input$header)
+      
+    })
+   
   output$contents <- renderTable({
-    
-    req(input$filedata)
-    get <- input$filedata
     
     if(is.null(input$filedata)){
       return(NULL)
@@ -25,13 +22,12 @@ server <- function(input, output)
   })
   output$summary <- renderPrint({
 
-    if(is.null(input$filedata))
+    if(is.null(input$submit)){
       return("Waitingforfile")
-    summary(data())
-    
-    
-    
-  }
+    }else{
+      summary(data())
+    }
+    }
     
   )
 }

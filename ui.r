@@ -7,17 +7,17 @@ ui <- fluidPage(
       fileInput("filedata","Choose CSV File",accept = c("text/csv",
                                                         "text/comma-separated-values,text/plain",
                                                         ".csv")),
-      tags$hr(),
       checkboxInput("header","Header",TRUE),
-      radioButtons("sep",'Separator',
+      radioButtons("sep",'Separator',inline = T,
                    choices = c(Comma =",",
                                Semicolon =";",
                                Tab = "\t"),
                    selected = ","),
-      radioButtons("disp","Display",
+      radioButtons("disp","Display",inline = T,
                    choices = c(Head = 'head',
                                ALL  = 'all'),
-                   selected = 'head')
+                   selected = 'head'),
+      actionButton("submit", "Submit")
       ),
     mainPanel(
       tabsetPanel(type = 'tabs',
