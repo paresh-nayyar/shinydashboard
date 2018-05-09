@@ -1,5 +1,6 @@
 library(shiny)
 library(shinythemes)
+library(ggplot2)
 
 shinyUI(fluidPage(navbarPage(theme=shinytheme("flatly"),tags$b("DashBoard"),br(),collapsible = T,
                              
@@ -19,8 +20,7 @@ tabPanel("Data",
                    choices = c(Head = 'head',
                                ALL  = 'all'),
                    selected = 'head'),
-      actionButton("submit", "Submit"),
-      uiOutput("columns")
+      actionButton("submit", "Submit",icon('table'))
       ),
     mainPanel(
       tabsetPanel(type = 'tabs',
@@ -29,6 +29,27 @@ tabPanel("Data",
       
     )
   )),
+
+tabPanel("Plots",
+         sidebarLayout(
+           sidebarPanel(
+         # uiOutput("columns"),
+           selectInput('plot',"Select Plot",choices = c('Line','Histogram','Bar','Box')),
+           conditionalPanel(
+           condition = "input.plot == 'Line'",
+           uiOutput('line.x'),
+           uiOutput("line.y")
+           ),
+           conditionalPanel(
+           condition = "input.plot == 'Histogram'",
+           uiOutput('hist')
+           )
+           ),
+           mainPanel(
+             plotOutput("check"),
+             verbatimTextOutput('check1')
+           )
+         )),
 navbarMenu("More",
            tabPanel("Summary"),
            "----",

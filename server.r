@@ -31,10 +31,60 @@ server <- function(input, output)
     
   )
   
- output$columns <- renderUI({
+ output$line.x <- renderUI({
    df        <- data()
    col.names <- names(df)
-   selectInput("columns","Select Columns",col.names,multiple = T)
+   selectInput("x","Select X-Axis",col.names,multiple = T)
+   
  })
+ 
+ output$line.y <- renderUI({
+   df        <- data()
+   col.names <- names(df)
+   selectInput("y","Select Y-Axis",col.names,multiple = T)
+   
+ })
+ 
+ output$hist <- renderUI({
+   df        <- data()
+   col.names <- names(df)
+   selectInput("hist","Select Column",col.names,multiple = F)
+   
+ })
+ 
+ # getvalue <- reactive({
+ #   output$hist
+ #   print(input$hist)
+ # })
+ 
+ output$check <- renderPlot({
+   
+   if(is.null(input$submit)){
+     return("Waitingforfile")
+   }else{
+     values <- as.numeric(data()[,input$hist])
+    # hist(values,col='blue',main = paste('Distribution of',input$hist),xlab = input$hist)
+     x<-ggplot(data=data(), aes(data()[,input$hist])) + geom_histogram() + 
+       labs(x = input$hist)
+     x
+   }
+ }
+ 
+ )
+ 
+ # output$check1 <- renderPrint({
+ #   
+ #   if(is.null(input$submit)){
+ #     return("Waitingforfile")
+ #   }else{
+ #     values <- data()[,input$hist]
+ #     print(values)
+ #     
+ #   }
+ # }
+ #)
+ 
+
+ 
 }
 
