@@ -34,14 +34,14 @@ server <- function(input, output)
  output$line.x <- renderUI({
    df        <- data()
    col.names <- names(df)
-   selectInput("x","Select X-Axis",col.names,multiple = T)
+   selectInput("line.x","Select X-Axis",col.names,multiple = T)
    
  })
  
  output$line.y <- renderUI({
    df        <- data()
    col.names <- names(df)
-   selectInput("y","Select Y-Axis",col.names,multiple = T)
+   selectInput("line.y","Select Y-Axis",col.names,multiple = T)
    
  })
  
@@ -52,39 +52,62 @@ server <- function(input, output)
    
  })
  
+ output$box.x <- renderUI({
+   df        <- data()
+   col.names <- names(df)
+   selectInput("box.x","Select Nominal Variable",col.names,multiple = F)
+   
+ })
+ 
+ output$box.y <- renderUI({
+   df        <- data()
+   col.names <- names(df)
+   selectInput("box.y","Select Continuous Variable",col.names,multiple = F)
+   
+ })
+ 
  # getvalue <- reactive({
  #   output$hist
  #   print(input$hist)
  # })
  
- output$check <- renderPlot({
+ output$plots <- renderPlot({
    
    if(is.null(input$submit)){
      return("Waitingforfile")
-   }else{
-     values <- as.numeric(data()[,input$hist])
-    # hist(values,col='blue',main = paste('Distribution of',input$hist),xlab = input$hist)
-     x<-ggplot(data=data(), aes(data()[,input$hist])) + geom_histogram() + 
+   }else
+     if(input$plot == 'Box'){
+      df <- data.frame(data())
+      x.axis <- as.character(df[,input$box.x])
+      y.axis <- as.numeric(df[,input$box.y])
+      box    <- ggplot(data=getdata, aes(y = y.axis,x = x.axis)) + geom_boxplot() 
+      box
+   }else
+     if(input$plot == 'Histogram')
+     {
+       hist   <- ggplot(data=data(), aes(data()[,input$hist])) + geom_histogram() + 
        labs(x = input$hist)
-     x
-   }
- }
- 
+       hist
+     }else
+       if(input$plot == 'Line')
+       {
+         
+       }
+  }
  )
  
- # output$check1 <- renderPrint({
- #   
- #   if(is.null(input$submit)){
- #     return("Waitingforfile")
- #   }else{
- #     values <- data()[,input$hist]
- #     print(values)
- #     
- #   }
- # }
- #)
- 
-
+  output$check1 <- renderPrint({
+    
+    if(is.null(input$submit)){
+      return("Waitingforfile")
+    }else{
+      df <- as.data.frame(data())
+      x.axis <- as.character(df[,input$box.x])
+      y.axis <- as.numeric(df[,input$box.y])
+      cat(input$box.x,'  ',input$box.y,'\n',(x.axis),'\n',(y.axis))
+   }
+  }
+ )
  
 }
 

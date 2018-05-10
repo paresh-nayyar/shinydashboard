@@ -33,21 +33,26 @@ tabPanel("Data",
 tabPanel("Plots",
          sidebarLayout(
            sidebarPanel(
-         # uiOutput("columns"),
-           selectInput('plot',"Select Plot",choices = c('Line','Histogram','Bar','Box')),
-           conditionalPanel(
-           condition = "input.plot == 'Line'",
-           uiOutput('line.x'),
-           uiOutput("line.y")
+            selectInput('plot',"Select Plot",choices = c('Line','Histogram','Bar','Box')),
+            conditionalPanel(
+              condition = "input.plot == 'Line'",
+              uiOutput('line.x'),
+              uiOutput("line.y")
+            ),
+            conditionalPanel(
+              condition = "input.plot == 'Histogram'",
+              uiOutput('hist')
            ),
            conditionalPanel(
-           condition = "input.plot == 'Histogram'",
-           uiOutput('hist')
-           )
+             condition = "input.plot == 'Box'",
+             uiOutput("box.x"),
+             uiOutput("box.y")
+           ),
+           actionButton("submit.plot", "Submit")
            ),
            mainPanel(
-             plotOutput("check"),
-             verbatimTextOutput('check1')
+            plotOutput("plots"),
+            verbatimTextOutput('check1')
            )
          )),
 navbarMenu("More",
