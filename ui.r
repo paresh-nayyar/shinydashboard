@@ -55,11 +55,26 @@ tabPanel("Plots",
             verbatimTextOutput('check1')
            )
          )),
-navbarMenu("More",
-           tabPanel("Summary"),
-           "----",
-           "Section header",
-           tabPanel("Table")
-)
+navbarMenu("Machine Learning",
+      tabPanel("Linear Regression",
+        sidebarLayout(
+          sidebarPanel(
+            fileInput("filedata","Choose CSV File",accept = c("text/csv",
+                                                              "text/comma-separated-values,text/plain",
+                                                               ".csv"))
+                        
+                      ),
+                      mainPanel(
+                        
+                      )
+                    )      ),
+           tabPanel("Logistic Regression")
+           #"----",
+           #"Section header",
+  
+   
+           
+
+           )
   
 )))

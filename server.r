@@ -80,7 +80,7 @@ server <- function(input, output)
       df <- data.frame(data())
       x.axis <- as.character(df[,input$box.x])
       y.axis <- as.numeric(df[,input$box.y])
-      box    <- ggplot(data=getdata, aes(y = y.axis,x = x.axis)) + geom_boxplot() 
+      box    <- ggplot(data=data(), aes(y = y.axis,x = x.axis)) + geom_boxplot() 
       box
    }else
      if(input$plot == 'Histogram')
@@ -91,7 +91,11 @@ server <- function(input, output)
      }else
        if(input$plot == 'Line')
        {
-         
+         df <- data.frame(data())
+         x.axis <- as.numeric(df[,input$line.x])
+         y.axis <- as.numeric(df[,input$line.y])
+         line <- ggplot(data = data(),aes(y = y.axis,x = x.axis)) + geom_line(color = 'black')
+         line
        }
   }
  )
