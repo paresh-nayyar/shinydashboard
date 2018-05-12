@@ -56,6 +56,7 @@ tabPanel("Plots",
            )
          )),
 navbarMenu("Machine Learning",
+      "Regression",
       tabPanel("Linear Regression",
         sidebarLayout(
           sidebarPanel(
@@ -68,11 +69,84 @@ navbarMenu("Machine Learning",
                         
                       )
                     )      ),
-           tabPanel("Logistic Regression")
+      tabPanel("Logistic Regression",
            #"----",
            #"Section header",
-  
-   
+           sidebarLayout(
+             sidebarPanel(
+               fileInput("filedata","Choose CSV File",accept = c("text/csv",
+                                                                 "text/comma-separated-values,text/plain",
+                                                                 ".csv"))
+               
+             ),
+             mainPanel(
+               
+             )
+           ) 
+           
+      ),
+      tabPanel("SVM",
+               sidebarLayout(
+                 sidebarPanel(
+                   fileInput("filedata","Choose CSV File",accept = c("text/csv",
+                                                                     "text/comma-separated-values,text/plain",
+                                                                     ".csv"))
+                   
+                 ),
+                 mainPanel(
+                   
+                 )
+               ) 
+               
+      ),
+      "----",
+      "Clustering",
+      tabPanel("KNN",
+               sidebarLayout(
+                 sidebarPanel(
+                   fileInput("filedata","Choose CSV File",accept = c("text/csv",
+                                                                     "text/comma-separated-values,text/plain",
+                                                                     ".csv"))
+                   
+                 ),
+                 mainPanel(
+                   
+                 )
+               ) 
+               
+      ),
+      tabPanel("k-Mean",
+               sidebarLayout(
+                 sidebarPanel(
+                   fileInput("filedata","Choose CSV File",accept = c("text/csv",
+                                                                     "text/comma-separated-values,text/plain",
+                                                                     ".csv"))
+                   
+                 ),
+                 mainPanel(
+                   
+                 )
+               ) 
+               
+      ),
+      tabPanel("Hierarchical",
+               sidebarLayout(
+                 sidebarPanel(
+                   fileInput("filedata","Choose CSV File",accept = c("text/csv",
+                                                                     "text/comma-separated-values,text/plain",
+                                                                     ".csv"))
+                   
+                 ),
+                 mainPanel(
+                   
+                 )
+               ) 
+               
+      )
+      
+      
+      
+      
            
 
            )
