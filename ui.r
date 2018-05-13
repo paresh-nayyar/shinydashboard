@@ -58,97 +58,22 @@ tabPanel("Plots",
 navbarMenu("Machine Learning",
       "Regression",
       tabPanel("Linear Regression",
-        sidebarLayout(
-          sidebarPanel(
-            fileInput("filedata","Choose CSV File",accept = c("text/csv",
-                                                              "text/comma-separated-values,text/plain",
-                                                               ".csv"))
-                        
-                      ),
-                      mainPanel(
-                        
-                      )
-                    )      ),
-      tabPanel("Logistic Regression",
-           #"----",
-           #"Section header",
-           sidebarLayout(
-             sidebarPanel(
-               fileInput("filedata","Choose CSV File",accept = c("text/csv",
-                                                                 "text/comma-separated-values,text/plain",
-                                                                 ".csv"))
-               
-             ),
-             mainPanel(
-               
-             )
-           ) 
-           
-      ),
-      tabPanel("SVM",
                sidebarLayout(
                  sidebarPanel(
-                   fileInput("filedata","Choose CSV File",accept = c("text/csv",
-                                                                     "text/comma-separated-values,text/plain",
-                                                                     ".csv"))
-                   
+                 uiOutput('reg.y'),
+                 uiOutput('reg.x'),
+                 actionButton("submit.reg", "Submit")
                  ),
                  mainPanel(
-                   
+                    tabsetPanel(type = 'tabs',
+                                tabPanel("Model-Summary",verbatimTextOutput("reg.summary")),
+                                tabPanel("Plot",tableOutput('reg.plot')))
                  )
-               ) 
+               )
                
-      ),
-      "----",
-      "Clustering",
-      tabPanel("KNN",
-               sidebarLayout(
-                 sidebarPanel(
-                   fileInput("filedata","Choose CSV File",accept = c("text/csv",
-                                                                     "text/comma-separated-values,text/plain",
-                                                                     ".csv"))
-                   
-                 ),
-                 mainPanel(
-                   
-                 )
-               ) 
-               
-      ),
-      tabPanel("k-Mean",
-               sidebarLayout(
-                 sidebarPanel(
-                   fileInput("filedata","Choose CSV File",accept = c("text/csv",
-                                                                     "text/comma-separated-values,text/plain",
-                                                                     ".csv"))
-                   
-                 ),
-                 mainPanel(
-                   
-                 )
-               ) 
-               
-      ),
-      tabPanel("Hierarchical",
-               sidebarLayout(
-                 sidebarPanel(
-                   fileInput("filedata","Choose CSV File",accept = c("text/csv",
-                                                                     "text/comma-separated-values,text/plain",
-                                                                     ".csv"))
-                   
-                 ),
-                 mainPanel(
-                   
-                 )
-               ) 
-               
+               )
+     
+      
       )
-      
-      
-      
-      
-           
-
-           )
   
 )))

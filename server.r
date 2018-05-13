@@ -5,6 +5,17 @@ server <- function(input, output)
       df <- read.csv(input$filedata$datapath,sep = input$sep, header = input$header)
       
     })
+    
+    reg.model <- eventReactive(input$submit.reg,{
+      var <- input$reg.x
+      mat <- NULL
+      for (char in var){
+        mat <- cbind(mat,matrix(data()[,char]))
+      }
+      
+      linear.model <- lm(data()[,input$reg.y] ~ mat)
+      print(linear.model)
+    })
    
   output$contents <- renderTable({
     
@@ -29,6 +40,17 @@ server <- function(input, output)
     }
     }
     
+  )
+  
+  output$reg.summary <- renderPrint({
+    
+    if(is.null(input$submit.reg)){
+      return("Waitingforfile")
+    }else{
+      summary(reg.model())
+    }
+  }
+  
   )
   
  output$line.x <- renderUI({
@@ -63,6 +85,20 @@ server <- function(input, output)
    df        <- data()
    col.names <- names(df)
    selectInput("box.y","Select Continuous Variable",col.names,multiple = F)
+   
+ })
+ 
+ output$reg.y <- renderUI({
+   df        <- data()
+   col.names <- names(df)
+   selectInput("reg.y","Select Dependent Variable",col.names,multiple = F)
+   
+ })
+ 
+ output$reg.x <- renderUI({
+   df        <- data()
+   col.names <- names(df)
+   selectInput("reg.x","Select Indpenedent Variables",col.names,multiple = T)
    
  })
  
