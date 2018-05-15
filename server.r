@@ -16,7 +16,38 @@ server <- function(input, output)
       linear.model <- lm(data()[,input$reg.y] ~ mat)
       print(linear.model)
     })
+    
+    log.model <- eventReactive(input$submit.log,{
+      var <- input$log.x
+      mat <- NULL
+      for (char in var){
+        mat <- cbind(mat,matrix(data()[,char]))
+      }
+      
+      log.model <- glm(data()[,input$log.y] ~ mat,family = binomial(link = "logit"))
+      print(log.model)
+    })
    
+    kmean.model <- eventReactive(input$submit.kmean,{
+      var <- input$var.kmean
+      mat <- NULL
+      for (char in var){
+        mat <- cbind(mat,matrix(data()[,char]))
+      }
+      
+      kmean.model <- kmeans(mat,centers = input$clusters,iter.max = 10)
+      print(kmean.model)
+    })
+    
+    model.data <- eventReactive(input$submit.train,{
+      n1 <- nrow(data())
+      n2 <- n1*input$train/100
+      index <- sample(n1,n2)
+      train_data <- data()[index,]
+      test_data  <- data()[-index,]
+      data.list <- list(train_data,test_data)
+    })
+    
   output$contents <- renderTable({
     
     if(is.null(input$filedata)){
@@ -31,6 +62,26 @@ server <- function(input, output)
     }
     }    
   })
+  output$train.data <- renderTable({
+    
+    if(is.null(input$submit.train)){
+      return(NULL)
+    }else{
+      
+      return(model.data()[[1]])
+      
+    }    
+  })
+  
+  output$test.data <- renderTable({
+    
+    if(is.null(input$submit.train)){
+      return(NULL)
+    }else{
+      return(model.data()[[2]])
+      }    
+  })
+  
   output$summary <- renderPrint({
 
     if(is.null(input$submit)){
@@ -48,6 +99,28 @@ server <- function(input, output)
       return("Waitingforfile")
     }else{
       summary(reg.model())
+    }
+  }
+  
+  )
+  
+  output$log.summary <- renderPrint({
+    
+    if(is.null(input$submit.log)){
+      return("Waitingforfile")
+    }else{
+      summary(log.model())
+    }
+  }
+  
+  )
+  
+  output$kmean.summary <- renderPrint({
+    
+    if(is.null(input$submit.kmean)){
+      return("Waitingforfile")
+    }else{
+      summary(kmean.model())
     }
   }
   
@@ -102,6 +175,27 @@ server <- function(input, output)
    
  })
  
+ output$log.y <- renderUI({
+   df        <- data()
+   col.names <- names(df)
+   selectInput("log.y","Select Dependent Variable",col.names,multiple = F)
+   
+ })
+ 
+ output$log.x <- renderUI({
+   df        <- data()
+   col.names <- names(df)
+   selectInput("log.x","Select Indpenedent Variables",col.names,multiple = T)
+   
+ })
+ 
+ output$var.kmean <- renderUI({
+   df        <- data()
+   col.names <- names(df)
+   selectInput("var.kmean","Select Columns",col.names,multiple = T)
+   
+ })
+ 
  # getvalue <- reactive({
  #   output$hist
  #   print(input$hist)
@@ -138,13 +232,10 @@ server <- function(input, output)
  
   output$check1 <- renderPrint({
     
-    if(is.null(input$submit)){
+    if(is.null(input$submit.train)){
       return("Waitingforfile")
     }else{
-      df <- as.data.frame(data())
-      x.axis <- as.character(df[,input$box.x])
-      y.axis <- as.numeric(df[,input$box.y])
-      cat(input$box.x,'  ',input$box.y,'\n',(x.axis),'\n',(y.axis))
+      print(model.data())
    }
   }
  )

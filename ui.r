@@ -51,11 +51,29 @@ tabPanel("Plots",
            actionButton("submit.plot", "Submit")
            ),
            mainPanel(
-            plotOutput("plots"),
-            verbatimTextOutput('check1')
+            
            )
          )),
 navbarMenu("Machine Learning",
+      "Data Preparation",
+      tabPanel("Training-Testing Data",
+               sidebarLayout(
+                 sidebarPanel(
+                   sliderInput("train", "Percentage of Training Data",
+                               min = 1, max = 100, value = 70),
+                   actionButton("submit.train", "Submit")
+                 ),
+                 mainPanel(
+                    tabsetPanel(type = 'tabs',
+                                tabPanel("Training Data",tableOutput("train.data")),
+                                tabPanel("Testing Data",tableOutput('test.data')),
+                                tabPanel("Check",verbatimTextOutput('check1')))
+                   #verbatimTextOutput('check1')
+                 )
+               )
+               
+      ),
+      
       "Regression",
       tabPanel("Linear Regression",
                sidebarLayout(
@@ -71,7 +89,38 @@ navbarMenu("Machine Learning",
                  )
                )
                
+               ),
+      tabPanel("Logistic  Regression",
+               sidebarLayout(
+                 sidebarPanel(
+                   uiOutput('log.y'),
+                   uiOutput('log.x'),
+                   actionButton("submit.log", "Submit")
+                 ),
+                 mainPanel(
+                   tabsetPanel(type = 'tabs',
+                               tabPanel("Model-Summary",verbatimTextOutput("log.summary")),
+                               tabPanel("Plot",tableOutput('log.plot')))
+                 )
                )
+               
+      ),
+      "Clustering",
+      tabPanel("K-Mean Clustering",
+               sidebarLayout(
+                 sidebarPanel(
+                   uiOutput('var.kmean'),
+                   numericInput("clusters", "Select Clusters", 10, min = 1, max = 100),
+                   actionButton("submit.kmean", "Submit")
+                 ),
+                 mainPanel(
+                   tabsetPanel(type = 'tabs',
+                               tabPanel("Model-Summary",verbatimTextOutput("kmean.summary")),
+                               tabPanel("Plot",tableOutput('kmean.plot')))
+                 )
+               )
+               
+      )
      
       
       )
